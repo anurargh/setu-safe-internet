@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setu: Parent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container parent-dashboard">
+        <h1>Setu: Parent Dashboard</h1>
+        <p>Monitor your child's internet search activity.</p>
+
+        <div class="summary-box">
+            <p><strong>Risky Queries Count:</strong> <span class="status-risky">{{ risky_count }}</span></p>
+            <p><strong>Blocked Queries Count:</strong> <span class="status-blocked">{{ blocked_count }}</span></p>
+            <p class="alert-message {{ 'alert-unsafe' if 'Unsafe' in alert_message else 'alert-clean' }}">
+                {{ alert_message }}
+            </p>
+        </div>
+
+        <h2>All Queries Log:</h2>
+        {% if data %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Query</th>
+                    <th>Age</th>
+                    <th>Status</th>
+                    <th>Explanation</th>
+                    <th>Citation</th>
+                    <th>Alternatives</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in data | reverse %} {# Display most recent first #}
+                <tr>
+                    <td>{{ entry.timestamp }}</td>
+                    <td>{{ entry.query }}</td>
+                    <td>{{ entry.age }}</td>
+                    <td><span class="status-{{ entry.status.lower() }}">{{ entry.status }}</span></td>
+                    <td>{{ entry.explanation }}</td>
+                    <td>
+                        {% if entry.citation != "N/A" %}
+                            {% set citation_parts = entry.citation.split(', ') %}
+                            {% set citation_url = "" %}
+                            {% for part in citation_parts %}
+                                {% if part.startswith('https://pubmed.ncbi.nlm.nih.gov') %}
+                                    {% set citation_url = part %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if citation_url %}
+                                <a href="{{ citation_url }}" target="_blank" title="{{ entry.citation }}">{{ entry.citation }}</a>
+                            {% else %}
+                                {{ entry.citation }}
+                            {% endif %}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if entry.alternatives %}
+                            <ul>
+                                {% for alt in entry.alternatives %}
+                                    <li><a href="{{ alt }}" target="_blank">{{ alt }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No queries logged yet.</p>
+        {% endif %}
+
+        <div class="footer-link">
+            <p><a href="{{ url_for('index') }}">Back to Child Interface</a></p>
+        </div>
+    </div>
+</body>
+</html>

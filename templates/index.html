@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setu: Safe Internet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container child-interface">
+        <h1>Setu: Safe Internet</h1>
+        <p>Type what you want to search, and we'll help you find safe content!</p>
+        <form method="POST">
+            <div class="form-group">
+                <label for="query">What do you want to search?</label>
+                <input type="text" id="query" name="query" placeholder="e.g., 'dinosaurs', 'volcanoes', 'games'" required>
+            </div>
+            <div class="form-group">
+                <label for="age">How old are you?</label>
+                <input type="number" id="age" name="age" min="5" max="18" value="8" required>
+            </div>
+            <button type="submit">Search Safely</button>
+        </form>
+
+        {% if query_result %}
+        <div class="result-box">
+            <h2>Query Result:</h2>
+            <p><strong>Query:</strong> {{ request.form.query }} (Age: {{ request.form.age }})</p>
+            <p><strong>Status:</strong> <span class="status-{{ query_result.status.lower() }}">{{ query_result.status }}</span></p>
+            <p><strong>Explanation:</strong> {{ query_result.explanation }}</p>
+            {% if query_result.citation != "N/A" %}
+            <p class="citation"><strong>Research Citation:</strong> {{ query_result.citation }}</p>
+            {% endif %}
+
+            {% if query_result.alternatives %}
+            <div class="alternatives">
+                <h3>Safe Alternatives:</h3>
+                <ul>
+                    {% for alt in query_result.alternatives %}
+                    <li><a href="{{ alt }}" target="_blank">{{ alt }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="footer-link">
+            <p><a href="{{ url_for('dashboard') }}">Go to Parent Dashboard</a></p>
+        </div>
+    </div>
+</body>
+</html>
