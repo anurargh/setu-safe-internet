@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 # --- Configuration ---
 genai.configure(api_key="AIzaSyCyNbqv1AhKyBMlkVFM5zD9fskfpAQyRX4") 
-model = genai.GenerativeModel('models/gemini-1.5-flash')
+model = genai.GenerativeModel('models/gemini-2.0-flash')
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkeyforhackathon'

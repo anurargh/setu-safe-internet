@@ -1,0 +1,44 @@
+.introduction {
+  padding: 4rem 2rem;
+  background-color: #f9f9f9;
+  text-align: center;
+  flex-grow: 1; /* Allows the introduction section to take up available space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-content {
+  /* max-width: 800px; */
+  margin: 0 auto;
+}
+
+.intro-content h2 {
+  font-size: 2.5rem;
+  color: #309afd;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+}
+
+.intro-content p {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  /* transition: background 0.3s ease; */
+}
+
+.btn:hover {
+  background-color: #218838;
+}
